@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tarot',
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark(useMaterial3: false),
       home: HomeScreen(),
       debugShowCheckedModeBanner: false,
     );

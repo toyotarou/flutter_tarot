@@ -19,7 +19,15 @@ class TarotListPage extends ConsumerWidget {
 
   DateTime monthFirst = DateTime.now();
 
-  List<String> youbiList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  List<String> youbiList = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
 
   List<String> days = [];
 
@@ -40,24 +48,38 @@ class TarotListPage extends ConsumerWidget {
 
     getTarotAllMap();
 
+    //--------------------------//
+    final monthEnd = DateTime(date.year, date.month + 1, 0);
+
+    final diff = monthEnd.difference(monthFirst).inDays;
+    final monthDaysNum = diff + 1;
+
+    final youbi = monthFirst.youbiStr;
+    final youbiNum = youbiList.indexWhere((element) => element == youbi);
+
+    final weekNum = ((monthDaysNum + youbiNum) <= 35) ? 5 : 6;
+    //--------------------------//
+
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.zero,
-      content: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: double.infinity,
-        height: double.infinity,
-        child: DefaultTextStyle(
-          style: const TextStyle(fontSize: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(width: context.screenSize.width),
-              const SizedBox(height: 10),
-              _getCalendar(),
-            ],
+      content: SingleChildScrollView(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: context.screenSize.width * 4,
+            height: context.screenSize.height * (weekNum * 0.4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(width: context.screenSize.width),
+                const SizedBox(height: 10),
+                _getCalendar(),
+              ],
+            ),
           ),
         ),
       ),
@@ -96,7 +118,7 @@ class TarotListPage extends ConsumerWidget {
     }
 
     return DefaultTextStyle(
-      style: const TextStyle(fontSize: 7),
+      style: const TextStyle(fontSize: 20),
       child: Column(children: list),
     );
   }
@@ -106,7 +128,10 @@ class TarotListPage extends ConsumerWidget {
     final list = <Widget>[];
 
     for (var i = week * 7; i < ((week + 1) * 7); i++) {
-      final dispDate = (days[i] == '') ? '' : DateTime(monthFirst.year, monthFirst.month, days[i].toInt()).yyyymmdd;
+      final dispDate = (days[i] == '')
+          ? ''
+          : DateTime(monthFirst.year, monthFirst.month, days[i].toInt())
+              .yyyymmdd;
 
       list.add(
         Expanded(
@@ -115,7 +140,9 @@ class TarotListPage extends ConsumerWidget {
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               border: Border.all(
-                color: (days[i] == '') ? Colors.transparent : Colors.white.withOpacity(0.4),
+                color: (days[i] == '')
+                    ? Colors.transparent
+                    : Colors.white.withOpacity(0.4),
               ),
             ),
             child: (days[i] == '')
@@ -124,7 +151,9 @@ class TarotListPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (tarotHistoryMap[dispDate] != null) ...[
-                        DecoratedBox(
+                        Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: (tarotHistoryMap[dispDate]!.reverse == '0')
                                 ? Colors.blueAccent.withOpacity(0.3)
@@ -141,7 +170,8 @@ class TarotListPage extends ConsumerWidget {
                               ),
                               const SizedBox(height: 5),
                               ConstrainedBox(
-                                constraints: const BoxConstraints(minHeight: 30),
+                                constraints:
+                                    const BoxConstraints(minHeight: 30),
                                 child: Text(tarotHistoryMap[dispDate]!.name),
                               ),
                             ],
@@ -170,7 +200,9 @@ class TarotListPage extends ConsumerWidget {
     tarotHistoryMap = {};
 
     _ref.watch(tarotHistoryProvider).record.forEach((element) {
-      tarotHistoryMap['${element.year}-${element.month}-${element.day} 00:00:00'.toDateTime().yyyymmdd] = element;
+      tarotHistoryMap['${element.year}-${element.month}-${element.day} 00:00:00'
+          .toDateTime()
+          .yyyymmdd] = element;
     });
   }
 
@@ -192,7 +224,8 @@ class TarotListPage extends ConsumerWidget {
     final tarot = tarotAllMap[id];
 
     if (tarot != null) {
-      final image = 'http://toyohide.work/BrainLog/tarotcards/${tarot.image}.jpg';
+      final image =
+          'http://toyohide.work/BrainLog/tarotcards/${tarot.image}.jpg';
 
       final qt = (reverse == '0') ? 0 : 2;
 
@@ -207,7 +240,7 @@ class TarotListPage extends ConsumerWidget {
           );
         },
         child: SizedBox(
-          width: 50,
+          width: 150,
           child: RotatedBox(
             quarterTurns: qt,
             child: Image.network(image),
