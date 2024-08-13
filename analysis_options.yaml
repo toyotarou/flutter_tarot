@@ -1,5 +1,10 @@
 include: package:flutter_lints/flutter.yaml
 analyzer:
+  exclude:
+    - "generated_model/**"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gen.dart"
   errors:
     missing_required_param: warning
     missing_return: warning
@@ -9,7 +14,6 @@ analyzer:
     public_member_api_docs: ignore
     lines_longer_than_80_chars: ignore
     avoid_function_literals_in_foreach_calls: ignore
-
     avoid_setters_without_getters: ignore
     use_setters_to_change_properties: ignore
     inference_failure_on_function_return_type: ignore
@@ -37,7 +41,6 @@ linter:
     - avoid_positional_boolean_parameters
     - avoid_private_typedef_functions
     - avoid_redundant_argument_values
-    - avoid_returning_null
     - avoid_returning_this
     - avoid_setters_without_getters
     - avoid_slow_async_io
@@ -53,7 +56,6 @@ linter:
     - directives_ordering
     - eol_at_end_of_file
     - flutter_style_todos
-    - invariant_booleans
     - join_return_with_assignment
     - lines_longer_than_80_chars
     - literal_only_boolean_expressions
@@ -76,7 +78,6 @@ linter:
     - secure_pubspec_urls
     - sized_box_shrink_expand
     - sort_constructors_first
-    - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
