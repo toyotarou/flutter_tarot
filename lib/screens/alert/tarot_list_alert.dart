@@ -70,13 +70,18 @@ class TarotListAlert extends ConsumerWidget {
     final tarotHistoryState = _ref.watch(tarotHistoryProvider);
 
     final list = <String>[];
-    tarotHistoryState.record.forEach((element) {
-      final ym = '${element.year}-${element.month}-${element.day} 00:00:00'.toDateTime().yyyymm;
 
-      if (!list.contains(ym)) {
-        list.add(ym);
-      }
-    });
+    if (tarotHistoryState.value != null) {
+      tarotHistoryState.value!.record.forEach((element) {
+        final ym = '${element.year}-${element.month}-${element.day} 00:00:00'
+            .toDateTime()
+            .yyyymm;
+
+        if (!list.contains(ym)) {
+          list.add(ym);
+        }
+      });
+    }
 
     list
       ..sort((a, b) => -1 * a.compareTo(b))

@@ -71,24 +71,27 @@ class TarotRankingScreen extends ConsumerWidget {
     final map3 = <String, TarotHistory>{};
 
     //初期化
-    for (var i = 0; i < tarotHistoryState.record.length; i++) {
-      final history = tarotHistoryState.record[i];
 
-      final key = '${history.name}|${history.reverse}';
+    if (tarotHistoryState.value != null) {
+      for (var i = 0; i < tarotHistoryState.value!.record.length; i++) {
+        final history = tarotHistoryState.value!.record[i];
 
-      map[key] = [];
+        final key = '${history.name}|${history.reverse}';
 
-      map3[key] = history;
-    }
+        map[key] = [];
 
-    for (var i = 0; i < tarotHistoryState.record.length; i++) {
-      final history = tarotHistoryState.record[i];
+        map3[key] = history;
+      }
 
-      final key = '${history.name}|${history.reverse}';
+      for (var i = 0; i < tarotHistoryState.value!.record.length; i++) {
+        final history = tarotHistoryState.value!.record[i];
 
-      final date = '${history.year}-${history.month}-${history.day}';
+        final key = '${history.name}|${history.reverse}';
 
-      map[key]?.add(date);
+        final date = '${history.year}-${history.month}-${history.day}';
+
+        map[key]?.add(date);
+      }
     }
 
     final list = <int>[];

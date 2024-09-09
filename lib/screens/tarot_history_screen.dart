@@ -30,7 +30,10 @@ class TarotHistoryScreen extends ConsumerWidget {
         ? tarotStraightAllState.value!.record
         : [];
 
-    makeJumpButton(data: tarotHistoryState.record);
+    makeJumpButton(
+        data: (tarotHistoryState.value != null)
+            ? tarotHistoryState.value!.record
+            : []);
 
     final size = MediaQuery.of(context).size;
 
@@ -93,16 +96,22 @@ class TarotHistoryScreen extends ConsumerWidget {
             child: ListView.builder(
               padding: const EdgeInsets.only(top: 20),
               controller: autoScrollController,
-              itemCount: tarotHistoryState.record.length,
+              itemCount: (tarotHistoryState.value != null)
+                  ? tarotHistoryState.value!.record.length
+                  : 0,
               itemBuilder: (context, index) {
-                final history = tarotHistoryState.record[index];
+                if (tarotHistoryState.value != null) {
+                  final history = tarotHistoryState.value!.record[index];
 
-                return AutoScrollTag(
-                  key: ValueKey(index),
-                  index: index,
-                  controller: autoScrollController,
-                  child: HistoryCard(history: history, usage: 'history'),
-                );
+                  return AutoScrollTag(
+                    key: ValueKey(index),
+                    index: index,
+                    controller: autoScrollController,
+                    child: HistoryCard(history: history, usage: 'history'),
+                  );
+                }
+
+                return Container();
               },
             ),
           ),

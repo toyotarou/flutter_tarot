@@ -205,11 +205,14 @@ class _TarotListPageState extends ConsumerState<TarotListPage> {
   void getTarotHistoryMap() {
     tarotHistoryMap = {};
 
-    ref.watch(tarotHistoryProvider).record.forEach((element) {
-      tarotHistoryMap['${element.year}-${element.month}-${element.day} 00:00:00'
-          .toDateTime()
-          .yyyymmdd] = element;
-    });
+    if (ref.watch(tarotHistoryProvider).value != null) {
+      ref.watch(tarotHistoryProvider).value!.record.forEach((element) {
+        tarotHistoryMap[
+            '${element.year}-${element.month}-${element.day} 00:00:00'
+                .toDateTime()
+                .yyyymmdd] = element;
+      });
+    }
   }
 
   ///

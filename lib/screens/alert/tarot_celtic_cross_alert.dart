@@ -72,22 +72,25 @@ class TarotCelticCrossAlert extends ConsumerWidget {
 
     final cards = <TarotOne>[];
 
-    _ref
-        .watch(tarotDrawProvider(30).select((value) => value.record))
-        .forEach((element) {
-      if (!tarotCardNames.contains(element.name)) {
-        if (cards.length < 16) {
-          cards.add(element);
-        }
-      }
+    _ref.watch(tarotDrawProvider(drawNum: 30)).when(
+          data: (value) {
+            value.record.forEach((element) {
+              if (!tarotCardNames.contains(element.name)) {
+                if (cards.length < 16) {
+                  cards.add(element);
+                }
+              }
+              tarotCardNames.add(element.name);
 
-      tarotCardNames.add(element.name);
-    });
-
-    //最初の6枚を捨てる
-    for (var i = 6; i < cards.length; i++) {
-      tarot10cards.add(cards[i]);
-    }
+              //最初の6枚を捨てる
+              for (var i = 6; i < cards.length; i++) {
+                tarot10cards.add(cards[i]);
+              }
+            });
+          },
+          error: (e, s) => null,
+          loading: () => null,
+        );
   }
 
   ///
