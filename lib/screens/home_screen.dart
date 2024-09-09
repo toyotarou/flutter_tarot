@@ -20,7 +20,9 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tarotStraightAllState = ref.watch(tarotStraightAllProvider);
-    straightAll = tarotStraightAllState.record;
+    straightAll = (tarotStraightAllState.value != null)
+        ? tarotStraightAllState.value!.record
+        : [];
 
     final tarotTodayState = ref.watch(
       tarotTodayProvider(DateTime.now().toString().split(' ')[0]),
@@ -45,7 +47,8 @@ class HomeScreen extends ConsumerWidget {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(top: 10, right: 10),
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                   decoration: BoxDecoration(
                     color: Colors.yellowAccent.withOpacity(0.3),
                   ),
@@ -82,7 +85,8 @@ class HomeScreen extends ConsumerWidget {
             const Divider(color: Colors.indigo),
             Container(
               alignment: Alignment.topLeft,
-              decoration: BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
+              decoration:
+                  BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 (tarotTodayState.record.reverse == 'just') ? '正位置' : '逆位置',
@@ -101,8 +105,12 @@ class HomeScreen extends ConsumerWidget {
               alignment: Alignment.topLeft,
               child: Text(tarotTodayState.record.msg1),
             ),
-            Container(padding: const EdgeInsets.all(10), child: Text(tarotTodayState.record.msg2)),
-            Container(padding: const EdgeInsets.all(10), child: Text(tarotTodayState.record.msg3)),
+            Container(
+                padding: const EdgeInsets.all(10),
+                child: Text(tarotTodayState.record.msg2)),
+            Container(
+                padding: const EdgeInsets.all(10),
+                child: Text(tarotTodayState.record.msg3)),
           ],
         ),
       ),

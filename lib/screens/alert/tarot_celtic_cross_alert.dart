@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tarot/model/tarot_all.dart';
 
 import '../../extensions/extensions.dart';
 import '../../model/tarot_one.dart';
@@ -71,7 +72,9 @@ class TarotCelticCrossAlert extends ConsumerWidget {
 
     final cards = <TarotOne>[];
 
-    _ref.watch(tarotDrawProvider(30).select((value) => value.record)).forEach((element) {
+    _ref
+        .watch(tarotDrawProvider(30).select((value) => value.record))
+        .forEach((element) {
       if (!tarotCardNames.contains(element.name)) {
         if (cards.length < 16) {
           cards.add(element);
@@ -93,13 +96,16 @@ class TarotCelticCrossAlert extends ConsumerWidget {
 
     final tarotStraightAllState = _ref.watch(tarotStraightAllProvider);
 
-    final straightAll = tarotStraightAllState.record;
+    final straightAll = (tarotStraightAllState.value != null)
+        ? tarotStraightAllState.value!.record
+        : <TarotAll>[];
 
     for (var i = 0; i < tarot10cards.length; i++) {
       final qt = (tarot10cards[i].reverse == 'just') ? 0 : 2;
 
-      final image =
-          (tarot10cards[i].image == '') ? '' : 'http://toyohide.work/BrainLog/tarotcards/${tarot10cards[i].image}.jpg';
+      final image = (tarot10cards[i].image == '')
+          ? ''
+          : 'http://toyohide.work/BrainLog/tarotcards/${tarot10cards[i].image}.jpg';
 
       final exPlanation = explanationList[i].split('|');
 
@@ -124,7 +130,8 @@ class TarotCelticCrossAlert extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(exPlanation[0], style: const TextStyle(fontSize: 12)),
+                      Text(exPlanation[0],
+                          style: const TextStyle(fontSize: 12)),
                       Text(exPlanation[1]),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,7 +140,9 @@ class TarotCelticCrossAlert extends ConsumerWidget {
                           GestureDetector(
                             onTap: () {
                               _utility.showTarotDialog(
-                                  id: int.parse(tarot10cards[i].id), state: straightAll, context: _context);
+                                  id: int.parse(tarot10cards[i].id),
+                                  state: straightAll,
+                                  context: _context);
                             },
                             child: Text(tarot10cards[i].name),
                           ),

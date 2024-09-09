@@ -22,7 +22,9 @@ class HistoryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tarotStraightAllState = ref.watch(tarotStraightAllProvider);
-    straightAll = tarotStraightAllState.record;
+    straightAll = (tarotStraightAllState.value != null)
+        ? tarotStraightAllState.value!.record
+        : [];
 
     final date = '${history.year}-${history.month}-${history.day}';
 
@@ -30,7 +32,9 @@ class HistoryCard extends ConsumerWidget {
 
     final reverse = (history.reverse == '0') ? 'just' : 'reverse';
 
-    final image = (history.image == '') ? '' : 'http://toyohide.work/BrainLog/tarotcards/${history.image}.jpg';
+    final image = (history.image == '')
+        ? ''
+        : 'http://toyohide.work/BrainLog/tarotcards/${history.image}.jpg';
 
     final drawNum = makeDrawNum(history: history, state: straightAll);
 
@@ -61,7 +65,8 @@ class HistoryCard extends ConsumerWidget {
                   children: [
                     Container(
                       alignment: Alignment.topRight,
-                      child: Text((usage == 'history') ? date : drawNum.toString()),
+                      child: Text(
+                          (usage == 'history') ? date : drawNum.toString()),
                     ),
                     Text(
                       history.name,
@@ -99,7 +104,8 @@ class HistoryCard extends ConsumerWidget {
   }
 
   ///
-  int makeDrawNum({required TarotHistory history, required List<TarotAll> state}) {
+  int makeDrawNum(
+      {required TarotHistory history, required List<TarotAll> state}) {
     var data = TarotAll(
       id: 0,
       name: '',
@@ -126,6 +132,8 @@ class HistoryCard extends ConsumerWidget {
       }
     }
 
-    return (history.reverse == '0') ? data.drawNumJ.length : data.drawNumR.length;
+    return (history.reverse == '0')
+        ? data.drawNumJ.length
+        : data.drawNumR.length;
   }
 }

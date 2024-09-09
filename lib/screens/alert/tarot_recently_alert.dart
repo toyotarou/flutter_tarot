@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tarot/model/tarot_all.dart';
 import 'package:tarot/state/tarot_all/tarot_all_viewmodel.dart';
 
 import '../../extensions/extensions.dart';
@@ -61,7 +62,11 @@ class TarotRecentlyAlert extends ConsumerWidget {
   void makeTab() {
     tabs = [];
 
-    final record = _ref.watch(tarotStraightAllProvider.select((value) => value.record));
+    final record = _ref.watch(
+      tarotStraightAllProvider.select(
+        (value) => (value.value != null) ? value.value!.record : <TarotAll>[],
+      ),
+    );
 
     for (var i = 0; i < 7; i++) {
       final day = DateTime.now().add(Duration(days: i * -1));

@@ -11,7 +11,8 @@ import '../../../state/tarot_history/tarot_history_notifier.dart';
 import '../../../utility/utility.dart';
 
 class TarotRecentlyPage extends ConsumerWidget {
-  TarotRecentlyPage({super.key, required this.date, required this.tarotAllList});
+  TarotRecentlyPage(
+      {super.key, required this.date, required this.tarotAllList});
 
   final DateTime date;
   final List<TarotAll> tarotAllList;
@@ -55,7 +56,15 @@ class TarotRecentlyPage extends ConsumerWidget {
   Widget tarotDisplay() {
     final tarotHistoryState = _ref.watch(tarotHistoryProvider);
 
-    var tarotHistoryOne = TarotHistory(year: '', month: '', day: '', id: 0, name: '', image: '', reverse: '', word: '');
+    var tarotHistoryOne = TarotHistory(
+        year: '',
+        month: '',
+        day: '',
+        id: 0,
+        name: '',
+        image: '',
+        reverse: '',
+        word: '');
 
     tarotHistoryState.record.forEach((element) {
       if (date.yyyymmdd == '${element.year}-${element.month}-${element.day}') {
@@ -87,10 +96,12 @@ class TarotRecentlyPage extends ConsumerWidget {
     if (tarotHistoryOne.name != '') {
       qt = (tarotHistoryOne.reverse == '0') ? 0 : 2;
 
-      image =
-          (tarotHistoryOne.image == '') ? '' : 'http://toyohide.work/BrainLog/tarotcards/${tarotHistoryOne.image}.jpg';
+      image = (tarotHistoryOne.image == '')
+          ? ''
+          : 'http://toyohide.work/BrainLog/tarotcards/${tarotHistoryOne.image}.jpg';
 
-      tarotAllOne = tarotAllList.firstWhere((element) => element.name == tarotHistoryOne.name);
+      tarotAllOne = tarotAllList
+          .firstWhere((element) => element.name == tarotHistoryOne.name);
     }
 
     final tarotStraightAllState = _ref.watch(tarotStraightAllProvider);
@@ -103,7 +114,8 @@ class TarotRecentlyPage extends ConsumerWidget {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(top: 10, right: 10),
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                 decoration: BoxDecoration(
                   color: Colors.yellowAccent.withOpacity(0.3),
                 ),
@@ -111,18 +123,25 @@ class TarotRecentlyPage extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () => _utility.showTarotDialog(
-                    id: tarotAllOne.id, state: tarotStraightAllState.record, context: _context),
+                  id: tarotAllOne.id,
+                  state: (tarotStraightAllState.value != null)
+                      ? tarotStraightAllState.value!.record
+                      : [],
+                  context: _context,
+                ),
                 icon: const Icon(Icons.info_outline),
               ),
             ],
           ),
           const SizedBox(height: 10),
           Text(tarotHistoryOne.name, style: const TextStyle(fontSize: 30)),
-          if (image != '') RotatedBox(quarterTurns: qt, child: Image.network(image)),
+          if (image != '')
+            RotatedBox(quarterTurns: qt, child: Image.network(image)),
           const Divider(color: Colors.indigo),
           Container(
             alignment: Alignment.topLeft,
-            decoration: BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
+            decoration:
+                BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
             padding: const EdgeInsets.only(left: 10),
             child: Text((tarotHistoryOne.reverse == '0') ? '正位置' : '逆位置'),
           ),

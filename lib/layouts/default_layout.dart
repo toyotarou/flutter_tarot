@@ -50,7 +50,8 @@ class DefaultLayout extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+                    decoration:
+                        BoxDecoration(color: Colors.black.withOpacity(0.5)),
                   ),
                 ],
               ),
@@ -90,7 +91,8 @@ class DefaultLayout extends ConsumerWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TarotRankingScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => TarotRankingScreen()),
                     );
                   },
                   icon: const Icon(Icons.trending_down_outlined),
@@ -126,7 +128,28 @@ class DefaultLayout extends ConsumerWidget {
 
   ///
   Widget dispDrawer(BuildContext context) {
-    final tarotCategoryAllState = _ref.watch(tarotCategoryAllProvider);
+    final list = <Widget>[];
+
+    _ref.watch(tarotCategoryAllProvider).when(
+          data: (value) {
+            value.record['big']?.forEach((element) =>
+                list.add(DrawerCard(data: element, category: 'big')));
+
+            value.record['cups']?.forEach((element) =>
+                list.add(DrawerCard(data: element, category: 'cups')));
+
+            value.record['pentacles']?.forEach((element) =>
+                list.add(DrawerCard(data: element, category: 'pentacles')));
+
+            value.record['swords']?.forEach((element) =>
+                list.add(DrawerCard(data: element, category: 'swords')));
+
+            value.record['wands']?.forEach((element) =>
+                list.add(DrawerCard(data: element, category: 'wands')));
+          },
+          error: (e, s) => Container(),
+          loading: Container.new,
+        );
 
     return Drawer(
       backgroundColor: Colors.black.withOpacity(0.2),
@@ -142,74 +165,9 @@ class DefaultLayout extends ConsumerWidget {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 100),
-              if (tarotCategoryAllState.record['big'] != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: tarotCategoryAllState.record['big']!.map((val) {
-                        return DrawerCard(data: val, category: 'big');
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              if (tarotCategoryAllState.record['cups'] != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    makeDrawerTitle(title: 'Cups'),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: tarotCategoryAllState.record['cups']!.map((val) {
-                        return DrawerCard(data: val, category: 'cups');
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              if (tarotCategoryAllState.record['pentacles'] != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    makeDrawerTitle(title: 'Pentacles'),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: tarotCategoryAllState.record['pentacles']!.map((val) {
-                        return DrawerCard(data: val, category: 'pentacles');
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              if (tarotCategoryAllState.record['swords'] != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    makeDrawerTitle(title: 'Swords'),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: tarotCategoryAllState.record['swords']!.map((val) {
-                        return DrawerCard(data: val, category: 'swords');
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              if (tarotCategoryAllState.record['wands'] != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    makeDrawerTitle(title: 'Wands'),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: tarotCategoryAllState.record['wands']!.map((val) {
-                        return DrawerCard(data: val, category: 'wands');
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              const SizedBox(height: 50),
+              Column(children: list),
             ],
           ),
         ),

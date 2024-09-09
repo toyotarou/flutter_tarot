@@ -216,13 +216,12 @@ class _TarotListPageState extends ConsumerState<TarotListPage> {
   void getTarotAllMap() {
     tarotAllMap = {};
 
-    final tarotCategoryAllState = ref.watch(tarotCategoryAllProvider);
-
-    tarotCategoryAllState.record.forEach((key, value) {
-      value.forEach((element) {
-        tarotAllMap[element.id] = element;
-      });
-    });
+    ref.watch(tarotCategoryAllProvider).when(
+          data: (value) => value.record.forEach((key, value2) =>
+              value2.forEach((element) => tarotAllMap[element.id] = element)),
+          error: (e, s) => null,
+          loading: () => null,
+        );
   }
 
   ///
@@ -241,7 +240,9 @@ class _TarotListPageState extends ConsumerState<TarotListPage> {
         onTap: () {
           _utility.showTarotDialog(
             id: id,
-            state: tarotStraightAllState.record,
+            state: (tarotStraightAllState.value != null)
+                ? tarotStraightAllState.value!.record
+                : [],
             context: context,
           );
         },

@@ -26,7 +26,9 @@ class TarotHistoryScreen extends ConsumerWidget {
     final tarotHistoryState = ref.watch(tarotHistoryProvider);
 
     final tarotStraightAllState = ref.watch(tarotStraightAllProvider);
-    straightAll = tarotStraightAllState.record;
+    straightAll = (tarotStraightAllState.value != null)
+        ? tarotStraightAllState.value!.record
+        : [];
 
     makeJumpButton(data: tarotHistoryState.record);
 
